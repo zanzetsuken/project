@@ -1,0 +1,53 @@
+1)  untuk memulai project baru install nestjs dengan cara buka cmd (run admin) lalu ketik nest new (project-name) 
+    maka nestjs akan auto terinstall dalam folder project baru yang akan kita gunakan.
+
+2)  setelah terinstall coba test apakah nestjs sudah terinstall dengan baik pada project dengan menjalankan npm run start:dev lalu apakah 
+    bisa terkoneksi dengan postman atau tidak (via visual studio code) bila sudah terhubung pada postman akan mengeluarkan hello world 
+    (setting default dari service dan controller awal project)
+
+3)  lalu buat lah API sendiri (controller dan user dulu) dan install typeorm dengan mengetikkan
+    npm install @nestjs/typeorm typeorm mysql2 dan tunggu hingga install berhasil
+
+4)  setelah installasi selesai daftarkan typeorm ke dalam modul dengan masukkan ketikan dibawah pada app.module
+    TypeOrmModule.forRoot({
+      type: 'mysql',                = tipe database
+      host: 'localhost',            = nama host
+      port: 3306,                   = nomor host
+      username: 'root',             = username database, biasanya root
+      password: 'mysql12345',       = password databse
+      database: 'companydb',        = nama database
+      autoLoadEntities: true,       = dengan nilai true maka jika true entities akan menload otomatis
+      synchronize: true,            = meng sinkronasi
+    }),
+
+@Post('update')
+  async update(@Body() params: CreateUserDto) {
+    return await this.userService.update(params);
+  } CONTOH NORMAL SIMPLE
+
+
+@Post('update')
+  async update(@Res() res: Response, @Body() params: CreateUserDto) {
+    try {
+      return await this.userService.update(params);
+    } catch (e) {
+      return res.send({
+        message: e
+      });
+    }
+  } CONTOH MENGGUNAKAN TRY CATCH AGAR POSTMAN BILA TERJADI ERROR BISA MEMBERITAU ERROR PADA BAGIAN MANA 
+
+   @Post('update')
+  async update(@Res() res: Response, @Body() params: CreateUserDto) {
+    try {
+      const result = await this.userService.update(params);
+      return res.send({
+        message: 'Success',
+        details: result,
+      });
+    } catch (e) {
+      return res.send({
+        message: e
+      });
+    }
+  } CONTOH POSTMAN ERROR SEKALIGUS MEMBERIKAN MESSAGE SUCCESS BILA PROGRAM BENAR

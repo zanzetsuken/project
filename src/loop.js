@@ -1,9 +1,11 @@
 const Name = ['Indra', 'Panji', 'Krisna', 'Attala'];
 
-    const data = Name.length
-    console.log(data);
+for (i = 0; i < Name.length; i++) {
+    const data = Name[i];
+    console.log(Name[i]);
 }
 
-// for (var data of Name) {
-//     console.log(data);
-// }
+for (var data of Name) {
+    
+    console.log(data);
+}

@@ -4,27 +4,22 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { UserController } from './Karyawan Feature/user.controller';
 import { UserService } from './Karyawan Feature/user.service';
-import { Karyawan } from './Karyawan Feature/user.entity';
 import { MahasiswaController } from './Mahasiswa Feature/mahasiswa.controller';
 import { MahasiswaService } from './Mahasiswa Feature/Mahasiswa.service';
-import { Mahasiswa } from './Mahasiswa Feature/mahasiswa.entity';
+require('dotenv').config();
 
 @Module({
   imports: [
     TypeOrmModule.forRoot({
       type: 'mysql',
-      host: 'localhost',
-      port: 3306,
-      username: 'root',
-      password: 'mysql12345',
-      database: 'mahasiswa',
-      autoLoadEntities: true,
+      host: process.env.DB_HOST,
+      port: Number(process.env.DB_PORT),
+      username: process.env.DB_USERNAME,
+      password: process.env.DB_PASSWORD,
+      database: process.env.DB_DATABASE,
+      entities: [`${__dirname}/entities/**/*.entity{.ts,.js}`],
       synchronize: false,
     }),
-    TypeOrmModule.forFeature([
-      Karyawan,
-      Mahasiswa
-    ]),
   ],
   controllers: [
     AppController,

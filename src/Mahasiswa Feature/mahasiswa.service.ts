@@ -3,6 +3,7 @@ import { getConnection } from "typeorm";
 import { PrimaryKeyInterface } from "./mahasiswa.controller";
 import { Mahasiswa } from "../entities/mahasiswa.entity";
 import { Prodi } from "../entities/prodi.entity";
+import { mahasiswaDto } from "./create-mahasiswa.dto";
 
 @Injectable()
 export class MahasiswaService {
@@ -20,74 +21,61 @@ export class MahasiswaService {
         });
     }
 
-    // async remove(params: PrimaryKeyInterface) {
-    //     return await this.mahasiswaRepository.
-    //         createQueryBuilder()
-    //         .delete()
-    //         .where({
-    //             nim: params.nim
-    //         }).execute();
-    // }
+    async remove(params: PrimaryKeyInterface) {
+        return await getConnection()
+            .createQueryBuilder()
+            .delete()
+            .where({
+                nim: params.nim
+            }).execute();
+    }
 
-    // async create(params: mahasiswaDto[]) {
-    //     // console.table(params);
-    //     const result: any[] = []; 
-    //     for (const data of params) {
-    //         const res = await this.mahasiswaRepository
-    //             .createQueryBuilder()
-    //             .insert()
-    //             .into(Mahasiswa)
-    //             .values([
-    //                 {
-    //                     nim: data.nim,
-    //                     nama: data.nama,
-    //                     email: data.email,
-    //                     kelahiran: data.kelahiran,
-    //                     ALAMAT: data.ALAMAT
-    //                 },
-    //             ])
-    //             .execute();
-    //             result.push(res);
-    //     }
-    //     return result;
-    // }
+    async create(params: mahasiswaDto[]) {
+        // console.table(params);
+        const result: any[] = [];
+        for (const data of params) {
+            const res = await getConnection()
+                .createQueryBuilder()
+                .insert()
+                .into(Mahasiswa)
+                .values([
+                    {
+                        nim: data.nim,
+                        nama: data.nama,
+                        email: data.email,
+                        kelahiran: data.kelahiran,
+                        ALAMAT: data.ALAMAT
+                    },
+                ])
+                .execute();
+            result.push(res);
+        }
+        return result;
+    }
 
-    // async update(params: mahasiswaDto) {
-    //     return await this.mahasiswaRepository
-    //     .createQueryBuilder()
-    //     .update(Mahasiswa)
-    //     .set({
-    //         nama: params.nama,
-    //         email: params.email,
-    //         kelahiran: params.kelahiran,
-    //         ALAMAT: params.ALAMAT
-    //     })
-    //     .where({
-    //         nim: params.nim
-    //     })
-    //     .execute();
-    // }
-
-    // async update(params: mahasiswaDto) {
-    //     return await this.mahasiswaRepository
-    //     .createQueryBuilder()
-    //     .update(Mahasiswa)
-    //     .set({
-    //         nim: params.nim,
-    //     })
-    //     .where({
-    //         nama: params.nim
-    //     })
-    //     .execute();
-    // }
+    async update(params: mahasiswaDto) {
+        return await getConnection()
+            .createQueryBuilder()
+            .update(Mahasiswa)
+            .set({
+                nama: params.nama,
+                email: params.email,
+                kelahiran: params.kelahiran,
+                ALAMAT: params.ALAMAT
+            })
+            .where({
+                nim: params.nim
+            })
+            .execute();
+    }
 
     async getMahasiswa(nim: string) {
         return await getConnection()
-        .getRepository(Mahasiswa)
-        .createQueryBuilder('mahasiswa')
-        .leftJoinAndMapOne('mahasiswa.prodi', Prodi, 'prodi', 'mahasiswa.nim = prodi.nim')
-        .where('mahasiswa.nim = :mahasiswaNim', { mahasiswaNim: nim})
-        .getMany();
+            .getRepository(Mahasiswa)
+            .createQueryBuilder('mahasiswa')
+            .leftJoinAndMapOne('mahasiswa.prodi', Prodi, 'prodi', 'mahasiswa.nim = prodi.nim')
+            .where('mahasiswa.nim = :mahasiswaNim', { mahasiswaNim: nim })
+            .getMany();
     }
 
 }

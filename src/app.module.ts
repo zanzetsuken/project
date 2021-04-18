@@ -32,4 +32,4 @@ require('dotenv').config();
     MahasiswaService
   ],
 })
-export class AppModule {}
+export class AppModule { }

@@ -12,7 +12,7 @@ export class MahasiswaService {
     async findAll() {
         return await getConnection().getRepository(Mahasiswa).find();
     }
-
+    
     async findOne(params: PrimaryKeyInterface) {
         return await getConnection().getRepository(Mahasiswa).findOne({
             where: {
@@ -77,5 +77,22 @@ export class MahasiswaService {
             .where('mahasiswa.nim = :mahasiswaNim', { mahasiswaNim: nim })
             .getMany();
     }
+
+    async ganjilgenap(angka: number) {
+    let ganjil: string = 'Ganjil: ';
+    let genap: string = 'Genap: ';
+
+    for (let i = 1; i <= angka; i++) {
+      if (i % 2 == 0) {
+        genap += `${String(i)},`;
+      } else {
+        ganjil += `${String(i)},`;
+      }
+    }
+    return {
+      ganjil: ganjil,
+      genap: genap,
+    };
+  }
 
 }

@@ -7,7 +7,7 @@ import { MahasiswaService } from "./Mahasiswa.service";
 export class MahasiswaController {
     constructor(private readonly mahasiswaService: MahasiswaService) { }
 
-    @Get()
+    @Get('findAll')
     async findAll(@Res() res: Response) {
         try {
             const result = await this.mahasiswaService.findAll();
@@ -37,7 +37,7 @@ export class MahasiswaController {
         }
     }
 
-    @Delete()
+    @Delete('remove')
     async remove(@Res() res: Response, @Query() params: PrimaryKeyInterface) {
         try {
             const result = await this.mahasiswaService.remove(params);
@@ -52,7 +52,7 @@ export class MahasiswaController {
         }
     }
 
-    @Post()
+    @Post('create')
     async create(@Res() res: Response, @Body() params: mahasiswaDto[]) {
         try {
             const result = await this.mahasiswaService.create(params);

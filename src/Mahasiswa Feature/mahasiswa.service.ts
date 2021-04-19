@@ -25,6 +25,7 @@ export class MahasiswaService {
         return await getConnection()
             .createQueryBuilder()
             .delete()
+            .from(Mahasiswa)
             .where({
                 nim: params.nim
             }).execute();
@@ -82,7 +83,7 @@ export class MahasiswaService {
     let ganjil: string = 'Ganjil: ';
     let genap: string = 'Genap: ';
 
-    for (let i = 1; i <= angka; i++) {
+    for (let i = 0; i <= angka; i++) {
       if (i % 2 == 0) {
         genap += `${String(i)},`;
       } else {

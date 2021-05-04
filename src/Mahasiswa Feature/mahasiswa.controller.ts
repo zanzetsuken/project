@@ -82,6 +82,21 @@ export class MahasiswaController {
         }
     }
 
+    @Post('findsomeone')
+    async findIn(@Res() res: Response, @Body() params) {
+        try {
+            const result = await this.mahasiswaService.findIn(params.nama, params.born);
+            return res.send({
+                message: 'Success',
+                details: result,
+            });
+        } catch (e) {
+            return res.send({
+                message: e
+            });
+        }
+    }
+
     @Get('leftjoin')
     async list(@Res() res: Response, @Query() params) {
         try {

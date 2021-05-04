@@ -12,7 +12,14 @@ export class MahasiswaService {
     async findAll() {
         return await getConnection().getRepository(Mahasiswa).find();
     }
-    
+
+    async findIn(namaes, born) {
+        return await getConnection().getRepository(Mahasiswa).createQueryBuilder('Mahasiswa')
+            .where(`Mahasiswa.nama IN (:...names)`, { names: namaes })
+            .andWhere(`Mahasiswa.kelahiran IN (:...kelahiran)`, { kelahiran: born })
+            .getMany();
+    }
+
     async findOne(params: PrimaryKeyInterface) {
         return await getConnection().getRepository(Mahasiswa).findOne({
             where: {
@@ -80,20 +87,20 @@ export class MahasiswaService {
     }
 
     async ganjilgenap(angka: number) {
-    let ganjil: string = 'Ganjil: ';
-    let genap: string = 'Genap: ';
+        let ganjil: string = 'Ganjil: ';
+        let genap: string = 'Genap: ';
 
-    for (let i = 0; i <= angka; i++) {
-      if (i % 2 == 0) {
-        genap += `${String(i)},`;
-      } else {
-        ganjil += `${String(i)},`;
-      }
+        for (let i = 0; i <= angka; i++) {
+            if (i % 2 == 0) {
+                genap += `${String(i)},`;
+            } else {
+                ganjil += `${String(i)},`;
+            }
+        }
+        return {
+            ganjil: ganjil,
+            genap: genap,
+        };
     }
-    return {
-      ganjil: ganjil,
-      genap: genap,
-    };
-  }
 
 }
